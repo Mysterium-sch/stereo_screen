@@ -8,7 +8,7 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QPainter>
-
+#include <QColor>
 MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   : QMainWindow(parent)
   , ros2_node(ros2_node)
@@ -19,8 +19,6 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   main_widget->setStyleSheet("background-color: #1F3347;");
 
   QHBoxLayout* main_layout = new QHBoxLayout;
-  main_layout->setSpacing(20);
-  main_layout->setMargin(20);
 
   // Prepare Image
   QPixmap pixxer = showImage();
@@ -40,6 +38,7 @@ MainGUI::~MainGUI()
 {
 }
 
+
 QPixmap MainGUI::showImage() {
   cv::Mat image = ros2_node->getRosMsg();
 
@@ -51,26 +50,33 @@ QPixmap MainGUI::showImage() {
 
 void MainGUI::updateImage()
 {
-  QPixmap pixxer = showImage();
+    QPixmap pixxer(800,480);
+    pixxer.fill(QColor("#1F3347"));
 
-  QPainter painter(&pixxer);
-  QFont font("Times New Roman", 14);
-  painter.setFont(font);
-  QPen outlinePen(Qt::black);
-  outlinePen.setWidth(3);
+    QImage im = showImage().toImage();
+    QPainter painter(&pixxer);
+    QFont font("Times New Roman", 14);
+    painter.setFont(font);
+    painter.setPen(Qt::white);
 
-  // text on image left
-  painter.setPen(outlinePen);
-  painter.drawText(10, 20, "Depth:");
-  painter.setPen(Qt::white);
-  painter.drawText(10, 20, "Depth:");
+    // Define margins
+    int leftMargin = 10;
+    int rightMargin = 10;
+    int topMargin = 30;
+    int bottomMargin = 30;
 
-  // text on image right
-  painter.setPen(outlinePen);
-  painter.drawText(int(pixxer.size().width())-100, 20, "IMU:");
-  painter.setPen(Qt::white);
-  painter.drawText(int(pixxer.size().width())-100, 20, "IMU:");
+    int adjustedWidth = pixxer.width() - (leftMargin + rightMargin);
+    int adjustedHeight = pixxer.height() - (topMargin + bottomMargin);
 
-  imageFrame->setPixmap(pixxer);
-  imageFrame->resize(pixxer.size());
+    painter.drawImage(QRect(leftMargin, topMargin, adjustedWidth, adjustedHeight), im);
+    painter.drawText(leftMargin, topMargin-10, "Depth:");
+    painter.drawText(pixxer.width()/2 - 40, topMargin-10, "Sonar:");
+    painter.drawText(pixxer.width() - rightMargin - 120, topMargin-10, "IMU: ");
+    painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, "Orin Connection: ");
+    painter.drawText(pixxer.width() - rightMargin - 100, pixxer.height()-bottomMargin/2, "bag: ");
+
+    
+
+    imageFrame->setPixmap(pixxer);
+    imageFrame->resize(pixxer.size());
 }
