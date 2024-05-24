@@ -24,12 +24,6 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
   // Prepare Image
   QPixmap pixxer = showImage();
-  QPainter painter(&pixxer);
-  QFont font("Times New Roman", 12);
-  painter.setFont(font);
-  painter.setPen(Qt::black);
-  painter.drawText(10, 20, "Your Text Here");
-
   imageFrame->setPixmap(pixxer);
   main_layout->addWidget(imageFrame);
   main_widget->setLayout(main_layout);
@@ -57,9 +51,26 @@ QPixmap MainGUI::showImage() {
 
 void MainGUI::updateImage()
 {
+  QPixmap pixxer = showImage();
 
-    QPixmap pixmap = showImage();
+  QPainter painter(&pixxer);
+  QFont font("Times New Roman", 14);
+  painter.setFont(font);
+  QPen outlinePen(Qt::black);
+  outlinePen.setWidth(3);
 
-    imageFrame->setPixmap(pixmap);
-    imageFrame->resize(pixmap.size());
+  // text on image left
+  painter.setPen(outlinePen);
+  painter.drawText(10, 20, "Depth:");
+  painter.setPen(Qt::white);
+  painter.drawText(10, 20, "Depth:");
+
+  // text on image right
+  painter.setPen(outlinePen);
+  painter.drawText(int(pixxer.size().width())-100, 20, "IMU:");
+  painter.setPen(Qt::white);
+  painter.drawText(int(pixxer.size().width())-100, 20, "IMU:");
+
+  imageFrame->setPixmap(pixxer);
+  imageFrame->resize(pixxer.size());
 }

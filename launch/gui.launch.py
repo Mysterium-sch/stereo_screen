@@ -4,14 +4,9 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    cam_topic = LaunchConfiguration('cam_topic', default='/flir_camera/image_raw')
+    cam_topic = LaunchConfiguration('cam_topic', default='/debayer/image_raw/rgb')
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'cam_topic',
-            default_value='/flir_camera/image_raw',
-            description='Topic name for the camera image'
-        ),
         Node(
             package='custom_guyi',
             executable='custom_guyi',
