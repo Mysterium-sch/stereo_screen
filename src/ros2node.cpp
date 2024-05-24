@@ -13,7 +13,7 @@ Ros2Node::Ros2Node()
 }
 
   void Ros2Node::cam_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
-    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8)->image;
+    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::RGB8)->image;
     publisher_->publish(*msg);
   }
 
