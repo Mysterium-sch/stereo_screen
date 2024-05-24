@@ -3,8 +3,12 @@
 Ros2Node::Ros2Node()
   : rclcpp::Node("ros2_node")
 {
+      this->declare_parameter<std::string>("cam_topic", "/flir_camera/image_raw");
+    std::string cam_topic;
+    this->get_parameter("cam_topic", cam_topic);
+
   cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
-    "/flir_camera/image_raw", 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
+    cam_topic, 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
   publisher_ = this->create_publisher<sensor_msgs::msg::Image>("pub_topic",10);
 }
 

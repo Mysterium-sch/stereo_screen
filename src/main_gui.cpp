@@ -57,10 +57,9 @@ QPixmap MainGUI::showImage() {
 
 void MainGUI::updateImage()
 {
-    // Get the updated image
+
     QPixmap pixmap = showImage();
 
-    // Update the QLabel with the new image
     imageFrame->setPixmap(pixmap);
     imageFrame->resize(pixmap.size());
 }
