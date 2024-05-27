@@ -65,13 +65,13 @@ void MainGUI::updateImage()
     int topMargin = 30;
     int bottomMargin = 30;
 
-    int adjustedWidth = pixxer.width() - (leftMargin + rightMargin);
-    int adjustedHeight = pixxer.height() - (topMargin + bottomMargin);
+    int adjustedWidth = pixxer.width() - 2*(leftMargin + rightMargin);
+    int adjustedHeight = pixxer.height() - 2*(topMargin + bottomMargin);
 
-    painter.drawImage(QRect(leftMargin, topMargin, adjustedWidth, adjustedHeight), im);
-    painter.drawText(leftMargin, topMargin-10, "Depth:");
-    painter.drawText(pixxer.width()/2 - 40, topMargin-10, "Sonar:");
-    painter.drawText(pixxer.width() - rightMargin - 120, topMargin-10, "IMU: ");
+    painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
+    painter.drawText(leftMargin, topMargin-5, "Depth:");
+    painter.drawText(pixxer.width()/2 - 40, topMargin-5, "Sonar:");
+    painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, "IMU: ");
     painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, "Orin Connection: ");
     painter.drawText(pixxer.width() - rightMargin - 100, pixxer.height()-bottomMargin/2, "bag: ");
 
