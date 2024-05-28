@@ -18,7 +18,6 @@ Ros2Node::Ros2Node()
     this->get_parameter("sonar_topic", sonar_topic);
 
     cam_topic = device + cam_topic;
-    depth_topic = device + depth_topic;
     sonar_topic = device + sonar_topic;
 
   cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
