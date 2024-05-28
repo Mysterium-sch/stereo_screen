@@ -83,7 +83,7 @@ void Ros2Node::sonar_callback(const std_msgs::msg::String::SharedPtr msg) {
 
 void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
     if(msg != nullptr) {
-      imu = "ACtive";
+      imu = "Active";
     } else {
       imu = "Not Active";
     }
