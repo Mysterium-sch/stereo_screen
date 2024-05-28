@@ -68,8 +68,8 @@ void MainGUI::updateImage()
     int adjustedWidth = pixxer.width() - 2*(leftMargin + rightMargin);
     int adjustedHeight = pixxer.height() - 2*(topMargin + bottomMargin);
 
-    std::string sonar_msg = "Sonar: " + ros2_node->getSonar();
-    std::string depth_msg = "Depth: " + ros2_node->getDepth().c_str();
+    QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
+    QString depth_msg = QString::fromStdString("Depth: " + std::to_string(ros2_node->getDepth()));
     
 
     painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
