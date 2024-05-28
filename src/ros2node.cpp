@@ -8,7 +8,7 @@ Ros2Node::Ros2Node()
     std::string device;
     this->get_parameter("device", device);
 
-    this->declare_parameter<std::string>("cam_topic", "/flir_camera/image_raw");
+    this->declare_parameter<std::string>("cam_topic", "/debayer/image_raw/rgb");
     this->declare_parameter<std::string>("depth_topic", "/bar30/depth");
     this->declare_parameter<std::string>("sonar_topic", "/imagenex831l/sonar_health");
 
