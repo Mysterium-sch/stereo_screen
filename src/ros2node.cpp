@@ -1,19 +1,20 @@
 #include "custom_guyi/ros2node.hpp"
 #include <sensor_msgs/image_encodings.hpp>
-#include <filesystem>
+#include <boost/filesystem.hpp>
+#include <iostream>
 
-bool fileExists(const std::string& directory, const std::string& file) {
-    namespace fs = std::filesystem;
-    try {
-        for (const auto& entry : fs::directory_iterator(directory)) {
-            if (fs::is_regular_file(entry) && entry.path().filename().string() == file) {
-                return true;
+  bool fileExists(const std::string& directory, const std::string& extension) {
+        try {
+
+            for (boost::filesystem::directory_iterator it(directory); it != boost::filesystem::directory_iterator(); ++it) {
+                if (it->path().extension() == extension) {
+                    return true;
+                }
             }
+        } catch (const boost::filesystem::filesystem_error& e) {
         }
-    } catch (const std::exception& e) {
+        return false;
     }
-    return false;
-}
 
 Ros2Node::Ros2Node()
   : rclcpp::Node("ros2_node"), depth(0.0f)
@@ -119,7 +120,7 @@ std::string Ros2Node::getOrin() {
 
 std::string Ros2Node::getBag() {
   std::string directory = "data/bag/";
-  std::string file = "*.db3";
+  std::string file = ".db3";
    if(fileExists(directory, file)) {
     return "Active";
    }

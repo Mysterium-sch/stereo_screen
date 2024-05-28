@@ -25,6 +25,7 @@ find_package(tf2_eigen REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(Boost REQUIRED COMPONENTS filesystem)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
     ament_index_cpp
@@ -57,9 +58,9 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  PUBLIC $<INSTALL_INTERFACE:include>)
+  PUBLIC $<INSTALL_INTERFACE:include>
+  PUBLIC ${Boost_INCLUDE_DIRS})
 
-# ament_target_dependencies(${PROJECT_NAME} SYSTEM rviz_visual_tools)
 ament_target_dependencies(${PROJECT_NAME} ${THIS_PACKAGE_INCLUDE_DEPENDS})
 
 target_link_libraries(${PROJECT_NAME}
@@ -67,7 +68,7 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::Core
   Qt5::Quick
   Qt5::Widgets
-)
+  ${Boost_LIBRARIES})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra)
 
@@ -101,3 +102,4 @@ install(
 # endif()
 
 ament_package()
+
