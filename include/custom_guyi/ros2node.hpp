@@ -1,9 +1,9 @@
 #pragma once
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
-#include "std_msgs/msg/Float32.hpp"
+#include "std_msgs/msg/float32.hpp"
 #include <cv_bridge/cv_bridge.h>
-//from imagenex831l_ros2.msg import ProcessedRange
+#include "std_msgs/msg/string.hpp"
 
 class Ros2Node : public rclcpp::Node
 {
@@ -13,10 +13,12 @@ class Ros2Node : public rclcpp::Node
 		cv::Mat getRosMsg();
 		float deph;
 		float getDepth()
+		std::string sonar;
+		std::string getSonar();
 
 	private:
 		rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr cam_sub_;
-		//rclcpp::Subscription<ProcessedRange>::SharedPtr sonar_sub_;
+		rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sonar_sub_;
 		//rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imu_sub_;
 		rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub_;
 		//rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr orin_sub;
@@ -24,4 +26,5 @@ class Ros2Node : public rclcpp::Node
 
 		void cam_callback(const sensor_msgs::msg::Image::SharedPtr msg);
 		void depth_callback(const std_msgs::msg::Float32::SharedPtr msg);
+		void sonar_callback(const std_msgs::msg::String::sharedPtr msg);
 };
