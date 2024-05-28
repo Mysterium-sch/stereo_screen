@@ -4,10 +4,13 @@
 
 bool fileExists(const std::string& directory, const std::string& file) {
     namespace fs = std::filesystem;
-    for (const auto& entry : fs::directory_iterator(directory)) {
-        if (fs::is_regular_file(entry) && entry.path().filename().string() == file) {
-            return true;
+    try {
+        for (const auto& entry : fs::directory_iterator(directory)) {
+            if (fs::is_regular_file(entry) && entry.path().filename().string() == file) {
+                return true;
+            }
         }
+    } catch (const std::exception& e) {
     }
     return false;
 }
@@ -120,5 +123,5 @@ std::string Ros2Node::getBag() {
    if(fileExists(directory, file)) {
     return "Active";
    }
-   return "Not ACtive";
+   return "Not Active";
 }

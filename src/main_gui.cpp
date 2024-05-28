@@ -79,7 +79,7 @@ void MainGUI::updateImage()
     painter.drawText(pixxer.width()/2 - 40, topMargin-5, sonar_msg);
     painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, imu_msg);
     painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
-    painter.drawText(pixxer.width() - rightMargin - 100, pixxer.height()-bottomMargin/2, bag_msg);
+    painter.drawText(pixxer.width() - rightMargin - 120, pixxer.height()-bottomMargin/2, bag_msg);
 
     
 
