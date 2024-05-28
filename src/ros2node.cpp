@@ -3,6 +3,10 @@
 Ros2Node::Ros2Node()
   : rclcpp::Node("ros2_node")
 {
+    this->declare_parameter<std::string>("device", '');
+    std::string device;
+    this->get_parameter("device", device);
+
     this->declare_parameter<std::string>("cam_topic", "/flir_camera/image_raw");
     this->declare_parameter<std::string>("depth_topic", "/bar30/depth");
     this->declare_parameter<std::string>("sonar_topic", "/imagenex831l/sonar_health");
@@ -12,6 +16,10 @@ Ros2Node::Ros2Node()
     this->get_parameter("cam_topic", cam_topic);
     this->get_parameter("depth_topic", depth_topic);
     this->get_parameter("sonar_topic", sonar_topic);
+
+    cam_topic = device + cam_topic;
+    depth_topic = device + depth_topic;
+    sonar_topic = device + sonar_topic;
 
   cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
     cam_topic, 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
