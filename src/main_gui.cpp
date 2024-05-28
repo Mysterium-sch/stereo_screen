@@ -70,14 +70,16 @@ void MainGUI::updateImage()
 
     QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
     QString depth_msg = QString::fromStdString("Depth: " + std::to_string(ros2_node->getDepth()));
-    
+    QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
+    QString orin_msg = QString::fromStdString("Orin Connection: " + ros2_node->getOrin());
+    QString bag_msg = QString::fromStdString("bag: " + ros2_node->getBag());
 
     painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
     painter.drawText(leftMargin, topMargin-5, depth_msg);
     painter.drawText(pixxer.width()/2 - 40, topMargin-5, sonar_msg);
-    painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, "IMU: ");
-    painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, "Orin Connection: ");
-    painter.drawText(pixxer.width() - rightMargin - 100, pixxer.height()-bottomMargin/2, "bag: ");
+    painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, imu_msg);
+    painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
+    painter.drawText(pixxer.width() - rightMargin - 100, pixxer.height()-bottomMargin/2, bag_msg);
 
     
 
