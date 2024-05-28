@@ -118,7 +118,7 @@ std::string Ros2Node::getOrin() {
 }
 
 std::string Ros2Node::getBag() {
-  std::string directory = "./data/bag/";
+  std::string directory = "data/bag/";
   std::string file = "*.db3";
    if(fileExists(directory, file)) {
     return "Active";
