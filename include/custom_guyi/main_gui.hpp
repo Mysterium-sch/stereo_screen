@@ -20,6 +20,11 @@ public:
     ~MainGUI() override;
     QPixmap showImage();
     void updateImage();
+    QSize windowSize;
+    int windowWidth;
+    int windowHeight;
+    bool once;
+    
 private:
     const std::shared_ptr<Ros2Node> ros2_node;
     QLabel* imageFrame;

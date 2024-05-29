@@ -17,6 +17,7 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 {
   main_widget = new QWidget(this);
   imageFrame = new QLabel(this);
+  once = true;
 
   main_widget->setStyleSheet("background-color: #1F3347;");
 
@@ -32,10 +33,10 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
   timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
-  timer->start(10);
+  timer->start(200);
 
-  // Set the window to full screen
   showFullScreen();
+  
 }
 
 MainGUI::~MainGUI()
@@ -53,7 +54,15 @@ QPixmap MainGUI::showImage() {
 
 void MainGUI::updateImage()
 {
-  QPixmap pixxer(800,480);
+ if(once) {
+  once = false;
+  windowSize = size();
+  windowWidth = windowSize.width();
+  windowHeight = windowSize.height();
+ 
+ }
+  
+  QPixmap pixxer(windowWidth, windowHeight);
   pixxer.fill(QColor("#1F3347"));
 
   QImage im = showImage().toImage();
@@ -63,10 +72,10 @@ void MainGUI::updateImage()
   painter.setPen(Qt::white);
 
   // Define margins
-  int leftMargin = 10;
-  int rightMargin = 10;
-  int topMargin = 30;
-  int bottomMargin = 30;
+  int leftMargin = windowWidth / 50;
+  int rightMargin = windowWidth / 50;
+  int topMargin = windowHeight / 30;
+  int bottomMargin = windowHeight / 30;
 
   int adjustedWidth = pixxer.width() - 2*(leftMargin + rightMargin);
   int adjustedHeight = pixxer.height() - 2*(topMargin + bottomMargin);
