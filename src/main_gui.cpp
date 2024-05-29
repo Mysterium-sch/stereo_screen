@@ -9,16 +9,12 @@
 #include <QTimer>
 #include <QPainter>
 #include <QColor>
-#include <QScreen>
-#include <QTransform>
-
 MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   : QMainWindow(parent)
   , ros2_node(ros2_node)
 {
   main_widget = new QWidget(this);
   imageFrame = new QLabel(this);
-  once = true;
 
   main_widget->setStyleSheet("background-color: #1F3347;");
 
@@ -32,17 +28,16 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
   setCentralWidget(main_widget);
 
-  timer = new QTimer(this);
-  connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
-  timer->start(200);
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
+    timer->start(200);
 
-  showFullScreen();
-  
 }
 
 MainGUI::~MainGUI()
 {
 }
+
 
 QPixmap MainGUI::showImage() {
   cv::Mat image = ros2_node->getRosMsg();
@@ -55,60 +50,39 @@ QPixmap MainGUI::showImage() {
 
 void MainGUI::updateImage()
 {
- if(once) {
-  once = false;
-  windowSize = size();
-  windowWidth = windowSize.height();
-  windowHeight = windowSize.width();
-  
-  std::cout << windowWidth << std::endl;
-  
-  if(windowWidth < 200) {
-  	windowWidth = 800;
- } 
- if (windowHeight < 200) {
- windowHeight = 480; 
- }
- 
- }
-  
-  QPixmap pixxer(windowWidth, windowHeight);
-  pixxer.fill(QColor("#1F3347"));
+    QPixmap pixxer(800,480);
+    pixxer.fill(QColor("#1F3347"));
 
-  QImage im = showImage().toImage();
-  QPainter painter(&pixxer);
-  QFont font("Times New Roman", 14);
-  painter.setFont(font);
-  painter.setPen(Qt::white);
+    QImage im = showImage().toImage();
+    QPainter painter(&pixxer);
+    QFont font("Times New Roman", 14);
+    painter.setFont(font);
+    painter.setPen(Qt::white);
 
-  // Define margins
-  int leftMargin = windowWidth / 50;
-  int rightMargin = windowWidth / 50;
-  int topMargin = windowHeight / 30;
-  int bottomMargin = windowHeight / 30;
+    // Define margins
+    int leftMargin = 10;
+    int rightMargin = 10;
+    int topMargin = 30;
+    int bottomMargin = 30;
 
-  int adjustedWidth = pixxer.width() - 2*(leftMargin + rightMargin);
-  int adjustedHeight = pixxer.height() - 2*(topMargin + bottomMargin);
+    int adjustedWidth = pixxer.width() - 2*(leftMargin + rightMargin);
+    int adjustedHeight = pixxer.height() - 2*(topMargin + bottomMargin);
 
-  QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
-  QString depth_msg = QString::fromStdString("Depth: " + std::to_string(ros2_node->getDepth()));
-  QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
-  QString orin_msg = QString::fromStdString("Orin Connection: " + ros2_node->getOrin());
-  QString bag_msg = QString::fromStdString("bag: " + ros2_node->getBag());
+    QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
+    QString depth_msg = QString::fromStdString("Depth: " + std::to_string(ros2_node->getDepth()));
+    QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
+    QString orin_msg = QString::fromStdString("Orin Connection: " + ros2_node->getOrin());
+    QString bag_msg = QString::fromStdString("bag: " + ros2_node->getBag());
 
-  painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
-  painter.drawText(leftMargin, topMargin-5, depth_msg);
-  painter.drawText(pixxer.width()/2 - 40, topMargin-5, sonar_msg);
-  painter.drawText(pixxer.width() - rightMargin - 130, topMargin-5, imu_msg);
-  painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
-  painter.drawText(pixxer.width() - rightMargin - 130, pixxer.height()-bottomMargin/2, bag_msg);
+    painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
+    painter.drawText(leftMargin, topMargin-5, depth_msg);
+    painter.drawText(pixxer.width()/2 - 40, topMargin-5, sonar_msg);
+    painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, imu_msg);
+    painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
+    painter.drawText(pixxer.width() - rightMargin - 120, pixxer.height()-bottomMargin/2, bag_msg);
 
-  // Rotate the pixmap by 90 degrees
-  QTransform transform;
-  transform.rotate(90);
-  QPixmap rotatedPixxer = pixxer.transformed(transform);
+    
 
-  imageFrame->setPixmap(rotatedPixxer);
-  imageFrame->resize(rotatedPixxer.size());
+    imageFrame->setPixmap(pixxer);
+    imageFrame->resize(pixxer.size());
 }
-
