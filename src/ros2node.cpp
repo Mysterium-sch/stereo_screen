@@ -53,7 +53,6 @@ Ros2Node::Ros2Node()
     }
 
     cam_topic = device + cam_topic;
-    sonar_topic = device + sonar_topic;
 
     cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
         cam_topic, 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
