@@ -31,6 +31,8 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
     timer->start(200);
+    
+    showFullScreen();
 
 }
 
