@@ -58,8 +58,8 @@ void MainGUI::updateImage()
  if(once) {
   once = false;
   windowSize = size();
-  windowWidth = windowSize.width();
-  windowHeight = windowSize.height();
+  windowWidth = windowSize.height();
+  windowHeight = windowSize.width();
  
  }
   
@@ -90,9 +90,9 @@ void MainGUI::updateImage()
   painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
   painter.drawText(leftMargin, topMargin-5, depth_msg);
   painter.drawText(pixxer.width()/2 - 40, topMargin-5, sonar_msg);
-  painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, imu_msg);
+  painter.drawText(pixxer.width() - rightMargin - 130, topMargin-5, imu_msg);
   painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
-  painter.drawText(pixxer.width() - rightMargin - 120, pixxer.height()-bottomMargin/2, bag_msg);
+  painter.drawText(pixxer.width() - rightMargin - 130, pixxer.height()-bottomMargin/2, bag_msg);
 
   // Rotate the pixmap by 90 degrees
   QTransform transform;
