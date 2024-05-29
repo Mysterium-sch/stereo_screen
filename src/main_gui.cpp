@@ -60,6 +60,15 @@ void MainGUI::updateImage()
   windowSize = size();
   windowWidth = windowSize.height();
   windowHeight = windowSize.width();
+  
+  std::cout << windowWidth << std::endl;
+  
+  if(windowWidth < 200) {
+  	windowWidth = 800;
+ } 
+ if (windowHeight < 200) {
+ windowHeight = 480; 
+ }
  
  }
   
