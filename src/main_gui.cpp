@@ -10,6 +10,7 @@
 #include <QPainter>
 #include <QColor>
 #include <QScreen>
+#include <QTransform>
 
 MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   : QMainWindow(parent)
@@ -93,7 +94,12 @@ void MainGUI::updateImage()
   painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
   painter.drawText(pixxer.width() - rightMargin - 120, pixxer.height()-bottomMargin/2, bag_msg);
 
-  imageFrame->setPixmap(pixxer);
-  imageFrame->resize(pixxer.size());
+  // Rotate the pixmap by 90 degrees
+  QTransform transform;
+  transform.rotate(90);
+  QPixmap rotatedPixxer = pixxer.transformed(transform);
+
+  imageFrame->setPixmap(rotatedPixxer);
+  imageFrame->resize(rotatedPixxer.size());
 }
 
