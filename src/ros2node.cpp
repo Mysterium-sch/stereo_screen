@@ -3,18 +3,20 @@
 #include <boost/filesystem.hpp>
 #include <iostream>
 
-  bool fileExists(const std::string& directory, const std::string& extension) {
-        try {
-
-            for (boost::filesystem::directory_iterator it(directory); it != boost::filesystem::directory_iterator(); ++it) {
-                if (it->path().extension() == extension) {
-                    return true;
-                }
+bool fileExists(const std::string& directory, const std::string& extension) {
+    try {
+        boost::filesystem::recursive_directory_iterator it(directory), end;
+        while (it != end) {
+            if (boost::filesystem::is_regular_file(*it) && it->path().extension() == extension) {
+                return true;
             }
-        } catch (const boost::filesystem::filesystem_error& e) {
+            ++it;
         }
-        return false;
+    } catch (const boost::filesystem::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
+    return false;
+}
 
 Ros2Node::Ros2Node()
   : rclcpp::Node("ros2_node"), depth(0.0f)
@@ -119,7 +121,7 @@ std::string Ros2Node::getOrin() {
 }
 
 std::string Ros2Node::getBag() {
-  std::string directory = "data/bag/";
+  std::string directory = ".";
   std::string file = ".db3";
    if(fileExists(directory, file)) {
     return "Active";
