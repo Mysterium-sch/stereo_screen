@@ -72,7 +72,7 @@ void MainGUI::updateImage()
 
     QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
     QString depth_msg = QString::fromStdString("Depth: Not Active");
-    if(ros2_node->getDepthStr() =="Active") {
+    if(ros2_node->getDepthStr().compare"Active")) {
     QString depth_msg = QString::fromStdString("Depth: " + std::to_string(ros2_node->getDepth()));
     }
     QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
