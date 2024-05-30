@@ -12,12 +12,11 @@ class Ros2Node : public rclcpp::Node
     public:
         Ros2Node();
         cv::Mat getRosMsg();
-        float getDepth();
+        std::string getDepth();
         std::string getSonar();
 		std::string getIMU();
 		std::string getOrin();
 		std::string getBag();
-		bool getDepthStr();
 
     private:
         cv::Mat cv_ptr;

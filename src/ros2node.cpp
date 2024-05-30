@@ -103,15 +103,12 @@ cv::Mat Ros2Node::getRosMsg() {
     return cv_ptr;
 }
 
-float Ros2Node::getDepth() {
-    return depth;
-}
 
-bool Ros2Node::getDepthStr() {
+std::string Ros2Node::getDepth() {
    	if(depth_sub_->get_publisher_count() > 0) {
-    return true;
+    return std::to_string(depth);
     }
-    return false;
+    return "Not Active";
 }
 
 std::string Ros2Node::getSonar() {
