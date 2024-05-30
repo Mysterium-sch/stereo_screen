@@ -17,7 +17,7 @@ class Ros2Node : public rclcpp::Node
 		std::string getIMU();
 		std::string getOrin();
 		std::string getBag();
-		std::string getDepthStr();
+		bool getDepthStr();
 
     private:
         cv::Mat cv_ptr;
