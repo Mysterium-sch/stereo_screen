@@ -45,7 +45,11 @@ Ros2Node::Ros2Node()
     this->get_parameter("depth_topic", depth_topic);
     this->get_parameter("sonar_topic", sonar_topic);
     this->get_parameter("imu_topic", imu_topic);
-
+    
+    cam_topic = device + cam_topic;
+    depth_topic = device + depth_topic;
+    imu_topic = device + imu_topic;
+    
     if(device == "jetson_1") {
       orin_topic = "jetson_2" + cam_topic;
     } else {
