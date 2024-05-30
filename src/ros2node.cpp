@@ -107,16 +107,33 @@ float Ros2Node::getDepth() {
     return depth;
 }
 
+std::string Ros2Node::getDepthStr() {
+   	if(depth_sub_->get_publisher_count() > 0) {
+    return "Active";
+    }
+    return "Not Active";
+}
+
 std::string Ros2Node::getSonar() {
+   	if(sonar_sub_->get_publisher_count() > 0) {
     return sonar;
+    }
+    return "Not Active";
 }
 
 std::string Ros2Node::getIMU() {
+	
+	if(imu_sub_->get_publisher_count() > 0) {
     return imu;
+    }
+    return "Not Active";
 }
 
 std::string Ros2Node::getOrin() {
+    	if(orin_sub_->get_publisher_count() > 0) {
     return orin;
+    }
+    return "Not Active";
 }
 
 std::string Ros2Node::getBag() {

@@ -71,7 +71,10 @@ void MainGUI::updateImage()
     int adjustedHeight = pixxer.height() - 2*(topMargin + bottomMargin);
 
     QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
+    QString depth_msg = QString::fromStdString("Depth: Not Active");
+    if(ros2_node->getDepthStr() =="Active") {
     QString depth_msg = QString::fromStdString("Depth: " + std::to_string(ros2_node->getDepth()));
+    }
     QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
     QString orin_msg = QString::fromStdString("Orin Connection: " + ros2_node->getOrin());
     QString bag_msg = QString::fromStdString("bag: " + ros2_node->getBag());
