@@ -9,6 +9,8 @@
 #include <QTimer>
 #include <QPainter>
 #include <QColor>
+#include <QDateTime>
+
 MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   : QMainWindow(parent)
   , ros2_node(ros2_node)
@@ -75,10 +77,12 @@ void MainGUI::updateImage()
     QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
     QString orin_msg = QString::fromStdString("Orin Connection: " + ros2_node->getOrin());
     QString bag_msg = QString::fromStdString("bag: " + ros2_node->getBag());
+    QString time_msg = QDateTime::currentDateTime().toString("hh:mm:ss");
 
     painter.drawImage(QRect(2*leftMargin, 2*topMargin, adjustedWidth, adjustedHeight), im);
     painter.drawText(leftMargin, topMargin-5, depth_msg);
-    painter.drawText(pixxer.width()/2 - 40, topMargin-5, sonar_msg);
+    painter.drawText(pixxer.width()/2 - 40, topMargin-5, time_msg);
+    painter.drawText(pixxer.width()/2 - 40, pixxer.height()-bottomMargin/2, sonar_msg);
     painter.drawText(pixxer.width() - rightMargin - 120, topMargin-5, imu_msg);
     painter.drawText(leftMargin, pixxer.height()-bottomMargin/2, orin_msg);
     painter.drawText(pixxer.width() - rightMargin - 120, pixxer.height()-bottomMargin/2, bag_msg);
