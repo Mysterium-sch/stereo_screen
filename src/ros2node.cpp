@@ -107,11 +107,11 @@ float Ros2Node::getDepth() {
     return depth;
 }
 
-std::string Ros2Node::getDepthStr() {
+bool Ros2Node::getDepthStr() {
    	if(depth_sub_->get_publisher_count() > 0) {
-    return "Active";
+    return true;
     }
-    return "Not Active";
+    return false;
 }
 
 std::string Ros2Node::getSonar() {
