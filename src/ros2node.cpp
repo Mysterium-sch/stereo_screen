@@ -46,9 +46,6 @@ Ros2Node::Ros2Node()
     this->get_parameter("sonar_topic", sonar_topic);
     this->get_parameter("imu_topic", imu_topic);
     
-    depth_topic = device + depth_topic;
-    imu_topic = device + imu_topic;
-    
 
     // TODO: PLEASE FIX ME
     if(device == "jetson_1") {
@@ -57,7 +54,6 @@ Ros2Node::Ros2Node()
       orin_topic = "jetson_1" + cam_topic;
     }
 
-    cam_topic = device + cam_topic;
 
     cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
         cam_topic, 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
