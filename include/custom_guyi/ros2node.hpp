@@ -24,6 +24,7 @@ class Ros2Node : public rclcpp::Node
         std::string sonar;
 		std::string imu;
 		std::string orin;
+        std::string device;
 
 
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr cam_sub_;

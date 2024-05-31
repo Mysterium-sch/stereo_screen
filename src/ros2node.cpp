@@ -18,6 +18,24 @@ bool fileExists(const std::string& directory, const std::string& extension) {
     return false;
 }
 
+std::string jetsonCheck(std::string device) {
+        if(device == "jetson_1") {
+      int x = system("ping -c1 -s1 192.168.0.100  > /dev/null 2>&1");
+        if (x==0){
+            return "Active";
+        }else{
+            return "Not ACtive";
+        }
+    } else {
+            int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
+        if (x==0){
+            return "Active";
+        }else{
+            return "Not ACtive";
+        }
+    }
+}
+
 Ros2Node::Ros2Node()
   : rclcpp::Node("ros2_node"), depth(0.0f)
 {
@@ -27,8 +45,9 @@ Ros2Node::Ros2Node()
 
 
     this->declare_parameter<std::string>("device", "");
-    std::string device;
     this->get_parameter("device", device);
+
+    
 
     this->declare_parameter<std::string>("cam_topic", "debayer/image_raw/rgb");
     this->declare_parameter<std::string>("depth_topic", "bar30/depth");
@@ -45,23 +64,6 @@ Ros2Node::Ros2Node()
     this->get_parameter("sonar_topic", sonar_topic);
     this->get_parameter("imu_topic", imu_topic);
     
-
-    // TODO: PLEASE FIX ME
-    if(device == "jetson_1") {
-      int x = system("ping -c1 -s1 192.168.0.100  > /dev/null 2>&1");
-        if (x==0){
-            orin = "Active";
-        }else{
-            orin = "Not ACtive";
-        }
-    } else {
-            int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
-        if (x==0){
-            orin = "Active";
-        }else{
-            orin = "Not ACtive";
-        }
-    }
 
 
     cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
@@ -127,6 +129,7 @@ std::string Ros2Node::getIMU() {
 }
 
 std::string Ros2Node::getOrin() {
+    orin = jetsonCheck(device);
     return orin;
 }
 
