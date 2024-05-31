@@ -39,7 +39,6 @@ Ros2Node::Ros2Node()
     std::string depth_topic;
     std::string sonar_topic;
     std::string imu_topic;
-    std::string orin_topic;
 
     this->get_parameter("cam_topic", cam_topic);
     this->get_parameter("depth_topic", depth_topic);
@@ -49,9 +48,19 @@ Ros2Node::Ros2Node()
 
     // TODO: PLEASE FIX ME
     if(device == "jetson_1") {
-      orin_topic = "jetson_2" + cam_topic;
+      int x = system("ping -c1 -s1 192.168.0.100  > /dev/null 2>&1");
+        if (x==0){
+            orin = "Active";
+        }else{
+            orin = "Not ACtive";
+        }
     } else {
-      orin_topic = "jetson_1" + cam_topic;
+            int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
+        if (x==0){
+            orin = "Active";
+        }else{
+            orin = "Not ACtive";
+        }
     }
 
 
@@ -67,8 +76,6 @@ Ros2Node::Ros2Node()
     imu_sub_ = this->create_subscription<sensor_msgs::msg::Imu>(
         imu_topic, 10, std::bind(&Ros2Node::imu_callback, this, std::placeholders::_1));
 
-    orin_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
-        orin_topic, 10, std::bind(&Ros2Node::orin_callback, this, std::placeholders::_1));
 
 }
 
@@ -89,14 +96,6 @@ void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
       imu = "Active";
     } else {
       imu = "Not Active";
-    }
-}
-
-void Ros2Node::orin_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
-    if(msg != nullptr) {
-      orin = "Active";
-    } else {
-      orin = "Not Active";
     }
 }
 
@@ -128,10 +127,7 @@ std::string Ros2Node::getIMU() {
 }
 
 std::string Ros2Node::getOrin() {
-    	if(orin_sub_->get_publisher_count() > 0) {
     return orin;
-    }
-    return "Not Active";
 }
 
 std::string Ros2Node::getBag() {
