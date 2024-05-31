@@ -4,10 +4,10 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    cam_topic = LaunchConfiguration('cam_topic', default='/debayer/image_raw/rgb')
-    imu_topic = LaunchConfiguration("imu_topic", default="/imu/data")
-    depth_topic = LaunchConfiguration("depth_topic", default="/bar30/depth")
-    sonar_topic = LaunchConfiguration("sonar_topic", default="/imagenex831l/sonar_health")
+    cam_topic = LaunchConfiguration('cam_topic', default='debayer/image_raw/rgb')
+    imu_topic = LaunchConfiguration("imu_topic", default="imu/data")
+    depth_topic = LaunchConfiguration("depth_topic", default="bar30/depth")
+    sonar_topic = LaunchConfiguration("sonar_topic", default="imagenex831l/sonar_health")
     device = LaunchConfiguration('device', default="")
 
     return LaunchDescription([

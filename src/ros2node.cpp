@@ -30,10 +30,10 @@ Ros2Node::Ros2Node()
     std::string device;
     this->get_parameter("device", device);
 
-    this->declare_parameter<std::string>("cam_topic", "/debayer/image_raw/rgb");
-    this->declare_parameter<std::string>("depth_topic", "/bar30/depth");
-    this->declare_parameter<std::string>("sonar_topic", "/imagenex831l/sonar_health");
-    this->declare_parameter<std::string>("imu_topic", "/imu/data");
+    this->declare_parameter<std::string>("cam_topic", "debayer/image_raw/rgb");
+    this->declare_parameter<std::string>("depth_topic", "bar30/depth");
+    this->declare_parameter<std::string>("sonar_topic", "imagenex831l/sonar_health");
+    this->declare_parameter<std::string>("imu_topic", "imu/data");
 
     std::string cam_topic;
     std::string depth_topic;
@@ -49,6 +49,8 @@ Ros2Node::Ros2Node()
     depth_topic = device + depth_topic;
     imu_topic = device + imu_topic;
     
+
+    // TODO: PLEASE FIX ME
     if(device == "jetson_1") {
       orin_topic = "jetson_2" + cam_topic;
     } else {
