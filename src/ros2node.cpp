@@ -26,7 +26,7 @@ std::string jetsonCheck(std::string device) {
         }else{
             return "Not Active";
         }
-    } else {
+    } else if (device == "jetson_2"){
             int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
         if (x==0){
             return "Active";
