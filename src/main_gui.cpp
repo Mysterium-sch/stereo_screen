@@ -36,11 +36,11 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
-    if(count >= 20000) {
+    if(count >= 100) {
       orin = ros2_node->getOrin();
       count = 0;
     } else {
-      orin += 1;
+      count += 1;
     }
     timer->start(200);
     
