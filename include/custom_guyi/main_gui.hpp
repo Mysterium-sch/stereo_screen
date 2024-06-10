@@ -25,6 +25,7 @@ public:
     int windowHeight;
     bool once;
     std::string orin;
+    int count;
     
 private:
     const std::shared_ptr<Ros2Node> ros2_node;

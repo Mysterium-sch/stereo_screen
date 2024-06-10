@@ -32,7 +32,7 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
   setCentralWidget(main_widget);
 
-    int count = 0;
+    count = 0;
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
@@ -66,7 +66,7 @@ void MainGUI::updateImage()
     } else {
       count += 1;
     }
-    
+
     QPixmap pixxer(800,480);
     pixxer.fill(QColor("#1F3347"));
 
