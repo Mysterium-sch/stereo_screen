@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QImage>
+#include <QString>
 #include <QPixmap>
 #include <QTimer>
 #include <QPainter>
@@ -17,6 +18,7 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 {
   main_widget = new QWidget(this);
   imageFrame = new QLabel(this);
+  orin = "Not ACtive";
 
   main_widget->setStyleSheet("background-color: #1F3347;");
 
@@ -30,8 +32,16 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
   setCentralWidget(main_widget);
 
+    int count = 0;
+
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
+    if(count >= 20000) {
+      orin = ros2_node->getOrin();
+      count = 0;
+    } else {
+      orin += 1;
+    }
     timer->start(200);
     
     showFullScreen();
@@ -40,6 +50,7 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
 MainGUI::~MainGUI()
 {
+  orin = "Not Active";
 }
 
 
@@ -75,7 +86,7 @@ void MainGUI::updateImage()
     QString sonar_msg = QString::fromStdString("Sonar: " + ros2_node->getSonar());
     QString depth_msg = QString::fromStdString("Depth: " + ros2_node->getDepth());
     QString imu_msg = QString::fromStdString("IMU: " + ros2_node->getIMU());
-    QString orin_msg = QString::fromStdString("Orin Connection: " + ros2_node->getOrin());
+    QString orin_msg = QString::fromStdString("Orin Connection: " + orin);
     QString bag_msg = QString::fromStdString("bag: " + ros2_node->getBag());
     QString time_msg = QDateTime::currentDateTime().toString("hh:mm:ss");
 
