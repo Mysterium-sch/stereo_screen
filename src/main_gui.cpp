@@ -18,7 +18,7 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 {
   main_widget = new QWidget(this);
   imageFrame = new QLabel(this);
-  orin = "Not ACtive";
+  orin = "Not Active";
 
   main_widget->setStyleSheet("background-color: #1F3347;");
 
