@@ -49,7 +49,7 @@ Ros2Node::Ros2Node()
 
     
 
-    this->declare_parameter<std::string>("cam_topic", "debayer/image_raw/rgb");
+    this->declare_parameter<std::string>("cam_topic", "debayer/image_raw/compressed");
     this->declare_parameter<std::string>("depth_topic", "bar30/depth");
     this->declare_parameter<std::string>("sonar_topic", "imagenex831l/sonar_health");
     this->declare_parameter<std::string>("imu_topic", "imu/data");
@@ -66,7 +66,7 @@ Ros2Node::Ros2Node()
     
 
 
-    cam_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
+    cam_sub_ = this->create_subscription<sensor_msgs::msg::CompressedImage>(
         cam_topic, 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
 
     depth_sub_ = this->create_subscription<std_msgs::msg::Float32>(
@@ -82,7 +82,8 @@ Ros2Node::Ros2Node()
 }
 
 void Ros2Node::cam_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
-    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::RGB8)->image;
+    cv::Mat decoded_image = cv::imdecode(cv::Mat(msg->data), cv::IMREAD_COLOR);
+    cv::Mat* cv_ptr = new cv::Mat(decoded_image);
 }
 
 void Ros2Node::depth_callback(const std_msgs::msg::Float32::SharedPtr msg) {

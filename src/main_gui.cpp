@@ -53,6 +53,7 @@ QPixmap MainGUI::showImage() {
 
   QImage img(image.data, image.cols, image.rows, QImage::Format_RGB888);
   QPixmap pixmap = QPixmap::fromImage(img);
+  delete image;
 
   return pixmap;
 }
@@ -104,4 +105,5 @@ void MainGUI::updateImage()
 
     imageFrame->setPixmap(pixxer);
     imageFrame->resize(pixxer.size());
+    
 }
