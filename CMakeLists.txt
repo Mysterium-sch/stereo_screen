@@ -88,6 +88,7 @@ install(
 # Install include, launch, config directories
 install(
   DIRECTORY launch
+  DIRECTORY include/${PROJECT_NAME}
   DESTINATION share/${PROJECT_NAME}
 )
 
