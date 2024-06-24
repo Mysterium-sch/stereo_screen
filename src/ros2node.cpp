@@ -81,7 +81,7 @@ Ros2Node::Ros2Node()
 
 }
 
-void Ros2Node::cam_callback(const sensor_msgs::CompressedImageConstPtr& msg) {
+void Ros2Node::cam_callback(const sensor_msgs::msg::CompressedImageConstPtr& msg) {
     cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::RGB8);
 }
 
