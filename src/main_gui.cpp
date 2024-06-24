@@ -36,21 +36,18 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
 MainGUI::~MainGUI()
 {
-  delete timer; // Delete timer object
+  delete timer;
 }
 
 QPixmap MainGUI::showImage() {
   cv::Mat image = ros2_node->getRosMsg();
   
   if (image.empty()) {
-    return QPixmap(); // Return an empty QPixmap if image is empty
+    return QPixmap();
   }
   
-  // Convert cv::Mat to QImage
   QImage img(image.data, image.cols, image.rows, image.step, QImage::Format_RGB888);
-  
-  // Convert QImage to QPixmap
-  QPixmap pixmap = QPixmap::fromImage(img.rgbSwapped()); // Swap RGB to BGR
+  QPixmap pixmap = QPixmap::fromImage(img.rgbSwapped());
   
   return pixmap;
 }
