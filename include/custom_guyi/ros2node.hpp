@@ -8,7 +8,6 @@
 #include "std_msgs/msg/string.hpp"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
-#include "custom_guyi/ros2node.hpp"
 #include <sensor_msgs/image_encodings.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
