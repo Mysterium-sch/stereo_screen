@@ -81,9 +81,8 @@ Ros2Node::Ros2Node()
 
 }
 
-void Ros2Node::cam_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
-    cv::Mat decoded_image = cv::imdecode(cv::Mat(msg->data), cv::IMREAD_COLOR);
-    cv::Mat* cv_ptr = new cv::Mat(decoded_image);
+void Ros2Node::cam_callback(const sensor_msgs::CompressedImageConstPtr& msg) {
+    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::RGB8);
 }
 
 void Ros2Node::depth_callback(const std_msgs::msg::Float32::SharedPtr msg) {
