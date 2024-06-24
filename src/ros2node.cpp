@@ -1,4 +1,4 @@
-#include "custom_guyi/ros2node.hpp"
+#include "ros2node.hpp"
 
 bool fileExists(const std::string& directory, const std::string& extension) {
     try {
@@ -67,7 +67,7 @@ Ros2Node::Ros2Node()
 
 Ros2Node::~Ros2Node()
 {
-    // Clean up subscriptions explicitly
+    // Reset subscriptions to release resources
     cam_sub_.reset();
     depth_sub_.reset();
     sonar_sub_.reset();
@@ -79,15 +79,15 @@ cv::Mat Ros2Node::getRosMsg() {
 }
 
 std::string Ros2Node::getDepth() {
-    return (depth_sub_->get_publisher_count() > 0) ? std::to_string(depth) : "Not Active";
+    return (depth_sub_->get_subscription_count() > 0) ? std::to_string(depth) : "Not Active";
 }
 
 std::string Ros2Node::getSonar() {
-    return (sonar_sub_->get_publisher_count() > 0) ? sonar : "Not Active";
+    return (sonar_sub_->get_subscription_count() > 0) ? sonar : "Not Active";
 }
 
 std::string Ros2Node::getIMU() {
-    return (imu_sub_->get_publisher_count() > 0) ? imu : "Not Active";
+    return (imu_sub_->get_subscription_count() > 0) ? imu : "Not Active";
 }
 
 std::string Ros2Node::getOrin() {
