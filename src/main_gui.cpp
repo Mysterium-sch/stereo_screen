@@ -1,4 +1,4 @@
-#include "main_gui.hpp"
+#include "custom_guyi/main_gui.hpp"
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QColor>
