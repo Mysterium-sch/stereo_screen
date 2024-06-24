@@ -1,5 +1,32 @@
 #include "custom_guyi/ros2node.hpp"
 
+bool fileExists(const std::string& directory, const std::string& extension) {
+    try {
+        boost::filesystem::recursive_directory_iterator it(directory), end;
+        while (it != end) {
+            if (boost::filesystem::is_regular_file(*it) && it->path().extension() == extension) {
+                return true;
+            }
+            ++it;
+        }
+    } catch (const boost::filesystem::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+    }
+    return false;
+}
+
+std::string jetsonCheck(const std::string& device) {
+    if (device == "jetson_1") {
+        int x = system("ping -c1 -s1 192.168.0.100  > /dev/null 2>&1");
+        return (x == 0) ? "Active" : "Not Active";
+    } else if (device == "jetson_2") {
+        int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
+        return (x == 0) ? "Active" : "Not Active";
+    } else {
+        return "Not Active";
+    }
+}
+
 Ros2Node::Ros2Node()
   : Node("ros2_node"), depth(0.0f)
 {
@@ -88,31 +115,4 @@ void Ros2Node::sonar_callback(const std_msgs::msg::String::SharedPtr msg) {
 
 void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
     imu = (msg != nullptr) ? "Active" : "Not Active";
-}
-
-bool Ros2Node::fileExists(const std::string& directory, const std::string& extension) {
-    try {
-        boost::filesystem::recursive_directory_iterator it(directory), end;
-        while (it != end) {
-            if (boost::filesystem::is_regular_file(*it) && it->path().extension() == extension) {
-                return true;
-            }
-            ++it;
-        }
-    } catch (const boost::filesystem::filesystem_error& e) {
-        std::cerr << "Filesystem error: " << e.what() << std::endl;
-    }
-    return false;
-}
-
-std::string Ros2Node::jetsonCheck(const std::string& device) {
-    if (device == "jetson_1") {
-        int x = system("ping -c1 -s1 192.168.0.100  > /dev/null 2>&1");
-        return (x == 0) ? "Active" : "Not Active";
-    } else if (device == "jetson_2") {
-        int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
-        return (x == 0) ? "Active" : "Not Active";
-    } else {
-        return "Not Active";
-    }
 }
