@@ -1,17 +1,9 @@
-#include "custom_guyi/main_gui.hpp"
-#include <opencv2/opencv.hpp>
-#include <QPushButton>
-#include <QBoxLayout>
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QImage>
-#include <QString>
-#include <QPixmap>
-#include <QTimer>
+#include "main_gui.hpp"
+#include <QHBoxLayout>
 #include <QPainter>
 #include <QColor>
 #include <QDateTime>
-#include <memory>
+#include <opencv2/opencv.hpp>
 
 MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   : QMainWindow(parent)
@@ -44,7 +36,7 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
 MainGUI::~MainGUI()
 {
-  orin = "Not Active";
+  delete timer; // Delete timer object
 }
 
 QPixmap MainGUI::showImage() {
