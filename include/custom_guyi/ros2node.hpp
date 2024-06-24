@@ -7,6 +7,7 @@
 #include "std_msgs/msg/float32.hpp"
 #include <cv_bridge/cv_bridge.h>
 #include "std_msgs/msg/string.hpp"
+#include <opencv2/opencv.hpp> 
 
 class Ros2Node : public rclcpp::Node
 {
