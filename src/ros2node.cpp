@@ -37,7 +37,7 @@ Ros2Node::Ros2Node()
     declare_parameter<std::string>("device", "");
     get_parameter("device", device);
 
-    declare_parameter<std::string>("cam_topic", "debayer/image_raw/compressed");
+    declare_parameter<std::string>("cam_topic", "image/compressed");
     declare_parameter<std::string>("depth_topic", "bar30/depth");
     declare_parameter<std::string>("sonar_topic", "imagenex831l/sonar_health");
     declare_parameter<std::string>("imu_topic", "imu/data");
