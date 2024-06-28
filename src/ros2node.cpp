@@ -102,7 +102,27 @@ std::string Ros2Node::getBag() {
 }
 
 void Ros2Node::cam_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg) {
-    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::RGB8)->image;
+
+    cv::Mat image = cv::imdecode(cv::Mat(msg->data), cv::IMREAD_COLOR);
+    
+    // Create a new Image message
+    auto image_msg = std::make_shared<sensor_msgs::msg::Image>();
+    
+    // Fill in the header (stamp and frame_id)
+    image_msg->header = msg->header;
+    
+    // Set the encoding of the image
+    image_msg->encoding = "bgr8"; // Assuming it's a BGR image (OpenCV default)
+    
+    // Set the image data
+    image_msg->height = image.rows;
+    image_msg->width = image.cols;
+    image_msg->step = static_cast<sensor_msgs::msg::Image::_step_type>(image.step);
+    size_t size = image.step * image.rows;
+    image_msg->data.resize(size);
+    memcpy(image_msg->data.data(), image.data, size);
+    
+    cv_ptr = cv_bridge::toCvCopy(image_msg, sensor_msgs::image_encodings::RGB8)->image;
 }
 
 void Ros2Node::depth_callback(const std_msgs::msg::Float32::SharedPtr msg) {
