@@ -15,18 +15,6 @@ bool fileExists(const std::string& directory, const std::string& extension) {
     return false;
 }
 
-std::string jetsonCheck(const std::string& device) {
-    if (device == "jetson_1") {
-        int x = system("ping -c1 -s1 192.168.0.100  > /dev/null 2>&1");
-        return (x == 0) ? "Active" : "Not Active";
-    } else if (device == "jetson_2") {
-        int x = system("ping -c1 -s1 192.168.0.150  > /dev/null 2>&1");
-        return (x == 0) ? "Active" : "Not Active";
-    } else {
-        return "Not Active";
-    }
-}
-
 Ros2Node::Ros2Node()
   : Node("ros2_node"), depth(0.0f)
 {
@@ -53,13 +41,16 @@ Ros2Node::Ros2Node()
     get_parameter("imu_topic", imu_topic);
 
     cam_sub_ = create_subscription<sensor_msgs::msg::CompressedImage>(
-        cam_topic, 10, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
+        cam_topic, 1, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
 
     depth_sub_ = create_subscription<std_msgs::msg::Float32>(
         depth_topic, 10, std::bind(&Ros2Node::depth_callback, this, std::placeholders::_1));
 
     sonar_sub_ = create_subscription<std_msgs::msg::String>(
         sonar_topic, 10, std::bind(&Ros2Node::sonar_callback, this, std::placeholders::_1));
+
+    orin_sub_ = create_subscription<std_msgs::msg::String>(
+        "orin", 10, std::bind(&Ros2Node::orin_callback, this, std::placeholders::_1));
     
     imu_sub_ = create_subscription<sensor_msgs::msg::Imu>(
         imu_topic, 10, std::bind(&Ros2Node::imu_callback, this, std::placeholders::_1));
@@ -72,6 +63,7 @@ Ros2Node::~Ros2Node()
     depth_sub_.reset();
     sonar_sub_.reset();
     imu_sub_.reset();
+    orin_sub_.reset();
 }
 
 cv::Mat Ros2Node::getRosMsg() {
@@ -91,7 +83,6 @@ std::string Ros2Node::getIMU() {
 }
 
 std::string Ros2Node::getOrin() {
-    orin = jetsonCheck(device);
     return orin;
 }
 
@@ -112,6 +103,10 @@ void Ros2Node::depth_callback(const std_msgs::msg::Float32::SharedPtr msg) {
 
 void Ros2Node::sonar_callback(const std_msgs::msg::String::SharedPtr msg) {
     sonar = msg->data;
+}
+
+void Ros2Node::orin_callback(const std_msgs::msg::String::SharedPtr msg) {
+    orin = msg->data;
 }
 
 void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
