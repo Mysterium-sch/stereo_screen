@@ -1,4 +1,4 @@
-#include "orin_detect.hpp"
+#include "custom_guyi/orin_detect.hpp"
 
 orin_detect::orin_detect()
     : rclcpp::Node("orin_detect"), depth(0.0f), timer_period(30.0)
@@ -15,7 +15,7 @@ orin_detect::orin_detect()
 }
 
 std::string orin_detect::jetsonCheck(std::string device) {
-    if(device == "jetson_1") {
+    if (device == "jetson_1") {
         int x = system("ping -c1 -s1 192.168.0.100 > /dev/null 2>&1");
         return (x == 0) ? "Active" : "Not Active";
     } else if (device == "jetson_2") {
@@ -31,11 +31,4 @@ void orin_detect::timer_callback() {
     auto message = std_msgs::msg::String();
     message.data = orin;
     publisher_->publish(message);
-}
-
-int main(int argc, char * argv[]) {
-    rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<orin_detect>());
-    rclcpp::shutdown();
-    return 0;
 }

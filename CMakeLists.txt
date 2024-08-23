@@ -52,8 +52,10 @@ add_executable(${PROJECT_NAME}
   src/main.cpp
   src/main_gui.cpp
   src/ros2node.cpp
+  src/orin_detect.cpp
   include/${PROJECT_NAME}/ros2node.hpp
   include/${PROJECT_NAME}/main_gui.hpp
+  include/${PROJECT_NAME}/orin_detect.hpp
 )
 
 target_include_directories(${PROJECT_NAME}
