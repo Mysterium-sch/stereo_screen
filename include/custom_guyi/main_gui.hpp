@@ -1,38 +1,35 @@
-#ifndef MAIN_GUI_HPP
-#define MAIN_GUI_HPP
+#pragma once
 
 #include <QMainWindow>
 #include <QWidget>
+#include <QPushButton>
 #include <QLabel>
+#include <QVBoxLayout>
+#include <QImage>
 #include <QTimer>
 #include <QPixmap>
-#include <memory>
-#include <QVBoxLayout>  
-#include <QPainter>   
-#include <QDateTime> 
+#include <QPainter>
+#include <opencv2/opencv.hpp>
 #include "custom_guyi/ros2node.hpp"
 
-class MainGUI : public QMainWindow {
+class MainGUI : public QMainWindow
+{
     Q_OBJECT
-
 public:
-    MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent = nullptr);
-    ~MainGUI();
-
-private slots:
-    void updateImage();
-
-private:
+    explicit MainGUI(const std::shared_ptr<Ros2Node>&  ros2_node, QWidget* parent = nullptr);
+    ~MainGUI() override;
     QPixmap showImage();
-
-    QWidget* main_widget;
-    QLabel* imageFrame;
-    QTimer* timer;
-    std::shared_ptr<Ros2Node> ros2_node;
-
-    QString orin;
+    void updateImage();
+    QSize windowSize;
+    int windowWidth;
+    int windowHeight;
+    bool once;
+    std::string orin;
     int count;
+    
+private:
+    const std::shared_ptr<Ros2Node> ros2_node;
+    QLabel* imageFrame;
+    QWidget* main_widget;
+    QTimer* timer;
 };
-
-#endif // MAIN_GUI_HPP
-
