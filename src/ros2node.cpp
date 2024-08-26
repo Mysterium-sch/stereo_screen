@@ -93,8 +93,12 @@ std::string Ros2Node::getBag() {
 }
 
 void Ros2Node::cam_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg) {
+    if (cam_sub_->get_publisher_count() > 0) {
+        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8)->image;
 
-    cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8)->image;
+        // Optionally downscale to reduce load
+        cv::resize(cv_ptr, cv_ptr, cv::Size(), 0.5, 0.5);
+    }
 }
 
 void Ros2Node::depth_callback(const std_msgs::msg::Float32::SharedPtr msg) {

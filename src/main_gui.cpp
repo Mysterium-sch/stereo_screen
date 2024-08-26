@@ -1,23 +1,15 @@
-#include "custom_guyi/main_gui.hpp"
-#include <QHBoxLayout>
-#include <QPainter>
-#include <QColor>
-#include <QDateTime>
-#include <opencv2/opencv.hpp>
-
 MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
   : QMainWindow(parent)
   , ros2_node(ros2_node)
 {
+  // Initialization
   main_widget = new QWidget(this);
   imageFrame = new QLabel(this);
   orin = "Not Active";
 
   main_widget->setStyleSheet("background-color: #1F3347;");
-
   QHBoxLayout* main_layout = new QHBoxLayout;
 
-  // Prepare Image
   QPixmap pixxer = showImage();
   imageFrame->setPixmap(pixxer);
   main_layout->addWidget(imageFrame);
@@ -27,16 +19,12 @@ MainGUI::MainGUI(const std::shared_ptr<Ros2Node>& ros2_node, QWidget* parent)
 
   count = 0;
 
+  // Timer frequency increased to reduce CPU load
   timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &MainGUI::updateImage);
-  timer->start(200);
+  timer->start(500);  // Adjusted to 500 ms or higher
     
   showFullScreen();
-}
-
-MainGUI::~MainGUI()
-{
-  delete timer;
 }
 
 QPixmap MainGUI::showImage() {
@@ -45,6 +33,9 @@ QPixmap MainGUI::showImage() {
   if (image.empty()) {
     return QPixmap();
   }
+
+  // Resize image to reduce processing load
+  cv::resize(image, image, cv::Size(), 0.5, 0.5);
   
   QImage img(image.data, image.cols, image.rows, image.step, QImage::Format_RGB888);
   QPixmap pixmap = QPixmap::fromImage(img.rgbSwapped());
@@ -54,7 +45,7 @@ QPixmap MainGUI::showImage() {
 
 void MainGUI::updateImage()
 {
-  if (count >= 100) {
+  if (count >= 500) {  // Increased interval for orin update
     orin = ros2_node->getOrin();
     count = 0;
   } else {
@@ -70,12 +61,8 @@ void MainGUI::updateImage()
   painter.setFont(font);
   painter.setPen(Qt::white);
 
-  // Define margins
-  int leftMargin = 10;
-  int rightMargin = 10;
-  int topMargin = 30;
-  int bottomMargin = 30;
-
+  // Draw only the required information
+  int leftMargin = 10, rightMargin = 10, topMargin = 30, bottomMargin = 30;
   int adjustedWidth = pixxer.width() - 2 * (leftMargin + rightMargin);
   int adjustedHeight = pixxer.height() - 2 * (topMargin + bottomMargin);
 
@@ -97,3 +84,4 @@ void MainGUI::updateImage()
   imageFrame->setPixmap(pixxer);
   imageFrame->resize(pixxer.size());
 }
+
