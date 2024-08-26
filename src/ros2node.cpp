@@ -1,6 +1,6 @@
 #include "custom_guyi/ros2node.hpp"
 
-bool fileExists(const std::string& directory, const std::string& extension) {
+bool Ros2Node::fileExists(const std::string& directory, const std::string& extension) {
     try {
         boost::filesystem::recursive_directory_iterator it(directory), end;
         while (it != end) {

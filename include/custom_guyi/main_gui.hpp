@@ -7,6 +7,9 @@
 #include <QTimer>
 #include <QPixmap>
 #include <memory>
+#include <QVBoxLayout>  
+#include <QPainter>   
+#include <QDateTime> 
 #include "custom_guyi/ros2node.hpp"
 
 class MainGUI : public QMainWindow {

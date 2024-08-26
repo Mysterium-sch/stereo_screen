@@ -21,6 +21,7 @@ public:
     std::string getIMU();
     std::string getOrin();
     std::string getBag();
+    bool fileExists(const std::string& directory, const std::string& extension);
 
 private:
     void cam_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg);
@@ -41,8 +42,6 @@ private:
     std::string orin;
     std::string sonar;
     std::string device;
-
-    bool fileExists(const std::string& directory, const std::string& extension);
 };
 
 #endif // ROS2_NODE_HPP
