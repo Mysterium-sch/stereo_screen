@@ -41,10 +41,12 @@ private:
     std::string imu;
     std::string orin;
     std::string device;
+    std::string bag;
 
     rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr cam_sub_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sonar_sub_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr orin_sub_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr bag_sub_;
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub_;
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub_;
 
@@ -52,5 +54,6 @@ private:
     void depth_callback(const std_msgs::msg::Float32::SharedPtr msg);
     void sonar_callback(const std_msgs::msg::String::SharedPtr msg);
     void orin_callback(const std_msgs::msg::String::SharedPtr msg);
+    void bag_callback(const std_msgs::msg::String::SharedPtr msg);
     void imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg);
 };
