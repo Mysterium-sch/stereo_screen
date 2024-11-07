@@ -1,26 +1,12 @@
 #include "custom_guyi/ros2node.hpp"
 
-bool fileExists(const std::string& directory, const std::string& extension) {
-    try {
-        boost::filesystem::recursive_directory_iterator it(directory), end;
-        while (it != end) {
-            if (boost::filesystem::is_regular_file(*it) && it->path().extension() == extension) {
-                return true;
-            }
-            ++it;
-        }
-    } catch (const boost::filesystem::filesystem_error& e) {
-        std::cerr << "Filesystem error: " << e.what() << std::endl;
-    }
-    return false;
-}
-
 Ros2Node::Ros2Node()
   : Node("ros2_node"), depth(0.0f)
 {
     imu = "Not Active";
     orin = "Not Active";
     sonar = "Not Active";
+    bag = "note Active";
 
     declare_parameter<std::string>("device", "");
     get_parameter("device", device);
@@ -51,6 +37,9 @@ Ros2Node::Ros2Node()
 
     orin_sub_ = create_subscription<std_msgs::msg::String>(
         "orin", 10, std::bind(&Ros2Node::orin_callback, this, std::placeholders::_1));
+
+    bag_sub_ = create_subscription<std_msgs::msg::String>(
+        "bag", 10, std::bind(&Ros2Node::bag_callback, this, std::placeholders::_1));
     
     imu_sub_ = create_subscription<sensor_msgs::msg::Imu>(
         imu_topic, 10, std::bind(&Ros2Node::imu_callback, this, std::placeholders::_1));
@@ -87,9 +76,7 @@ std::string Ros2Node::getOrin() {
 }
 
 std::string Ros2Node::getBag() {
-    std::string directory = ".";
-    std::string file = ".db3";
-    return fileExists(directory, file) ? "Active" : "Not Active";
+    return bag;
 }
 
 void Ros2Node::cam_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg) {
@@ -107,6 +94,10 @@ void Ros2Node::sonar_callback(const std_msgs::msg::String::SharedPtr msg) {
 
 void Ros2Node::orin_callback(const std_msgs::msg::String::SharedPtr msg) {
     orin = msg->data;
+}
+
+void Ros2Node::bag_callback(const std_msgs::msg::String::SharedPtr msg) {
+    bag = msg->data;
 }
 
 void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
