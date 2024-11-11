@@ -6,7 +6,7 @@ Ros2Node::Ros2Node()
     imu = "Not Active";
     orin = "Not Active";
     sonar = "Not Active";
-    bag = "note Active";
+    bag = "Not Active";
 
     declare_parameter<std::string>("device", "");
     get_parameter("device", device);
