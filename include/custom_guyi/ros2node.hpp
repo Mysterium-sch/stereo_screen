@@ -18,8 +18,9 @@
 #include <sensor_msgs/msg/compressed_image.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <cv_bridge/cv_bridge.h>
-#include <apriltag_ros/apriltag_msgs/msg/AprilTagDetectionArray.msg>
+#include "apriltag_msgs/msg/april_tag_detection_array.hpp"
 
+namespace atd = apriltag_msgs::msg;
 
 
 class Ros2Node : public rclcpp::Node
@@ -33,6 +34,7 @@ public:
     std::string getSonar();
     std::string getIMU();
     std::string getOrin();
+    std::string getBag();
 
 private:
     cv::Mat cv_ptr;
@@ -41,6 +43,7 @@ private:
     std::string imu;
     std::string orin;
     std::string device;
+    std::string bag;
 
     rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr cam_sub_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sonar_sub_;

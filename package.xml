@@ -10,6 +10,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- Existing build and exec dependencies -->
   <build_depend>control_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>interactive_markers</build_depend>
@@ -49,6 +50,9 @@
   <exec_depend>ur_description</exec_depend>
   <exec_depend>ur_robot_driver</exec_depend>
   <exec_depend>ur_ros2_control_demos</exec_depend>
+
+  <build_depend>apriltag_ros</build_depend>
+  <exec_depend>apriltag_ros</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

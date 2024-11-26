@@ -77,6 +77,10 @@ std::string Ros2Node::getOrin() {
     return orin;
 }
 
+std::string Ros2Node::getBag() {
+    return bag;
+}
+
 void Ros2Node::cam_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg) {
 
     cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8)->image;
@@ -97,11 +101,16 @@ void Ros2Node::orin_callback(const std_msgs::msg::String::SharedPtr msg) {
 void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
     imu = (msg != nullptr) ? "Active" : "Not Active";
 }
-<<<<<<< Updated upstream
-=======
-
 
 void Ros2Node::tag_callback(const apriltag_msgs::msg::AprilTagDetectionArray::SharedPtr msg) {
-    
+    if (msg->detections.empty()) {
+        RCLCPP_INFO(this->get_logger(), "No AprilTags detected.");
+        return;
+    }
+
+    for (const auto& detection : msg->detections) {
+        RCLCPP_INFO(this->get_logger(), "Detected Tag ID: %d", detection.id);
+
+
+    }
 }
->>>>>>> Stashed changes
