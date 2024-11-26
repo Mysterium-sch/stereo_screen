@@ -21,7 +21,7 @@ Ros2Node::Ros2Node()
     std::string depth_topic;
     std::string sonar_topic;
     std::string imu_topic;
-    std::string tag_topic = device + "/apriltag_detections";
+    std::string tag_topic = "/apriltag_detections";
 
     get_parameter("cam_topic", cam_topic);
     get_parameter("depth_topic", depth_topic);
