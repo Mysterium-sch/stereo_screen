@@ -16,17 +16,19 @@ Ros2Node::Ros2Node()
     declare_parameter<std::string>("depth_topic", "bar30/depth");
     declare_parameter<std::string>("sonar_topic", "imagenex831l/sonar_health");
     declare_parameter<std::string>("imu_topic", "imu/data");
+    declare_parameter<std::string>("tag_topic", "/apriltag_detections");
 
     std::string cam_topic;
     std::string depth_topic;
     std::string sonar_topic;
     std::string imu_topic;
-    std::string tag_topic = "/apriltag_detections";
+    std::string tag_topic;
 
     get_parameter("cam_topic", cam_topic);
     get_parameter("depth_topic", depth_topic);
     get_parameter("sonar_topic", sonar_topic);
     get_parameter("imu_topic", imu_topic);
+    get_parameter("tag_topic", tag_topic);
 
     cam_sub_ = create_subscription<sensor_msgs::msg::CompressedImage>(
         cam_topic, 1, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
