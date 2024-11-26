@@ -7,9 +7,9 @@ Ros2Node::Ros2Node()
     orin = "Not Active";
     sonar = "Not Active";
     bag = "Not Active";
-    std::String device = "null"
+    std::string device = "null";
 
-    declare_parameter<std::string>("device", "");
+    declare_parameter<std::string>("device", "null");
     get_parameter("device", device);
 
     declare_parameter<std::string>("cam_topic", "flir_camera/image_raw/compressed");
