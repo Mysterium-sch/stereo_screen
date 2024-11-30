@@ -47,6 +47,8 @@ Ros2Node::Ros2Node()
 
     tag_sub_ = create_subscription<apriltag_msgs::msg::AprilTagDetectionArray>(
         tag_topic, 1, std::bind(&Ros2Node::tag_callback, this, std::placeholders::_1));
+
+    tag_id_pub_ = create_publisher<std_msgs::msg::Int32>("tag_id", 10);
 }
 
 Ros2Node::~Ros2Node()
@@ -58,6 +60,7 @@ Ros2Node::~Ros2Node()
     imu_sub_.reset();
     orin_sub_.reset();
     tag_sub_.reset();
+    tag_id_pub_.reset();
 }
 
 cv::Mat Ros2Node::getRosMsg() {
@@ -112,8 +115,9 @@ void Ros2Node::tag_callback(const apriltag_msgs::msg::AprilTagDetectionArray::Sh
     }
 
     for (const auto& detection : msg->detections) {
-        RCLCPP_INFO(this->get_logger(), "Detected Tag ID: %d", detection.id);
-
-
+        auto tag_id_msg = std_msgs::msg::Int32();
+        tag_id_msg.data = detection.id;
+        tag_id_pub_->publish(tag_id_msg);
+        RCLCPP_INFO(this->get_logger(), "Published Tag ID: %d", detection.id);
     }
 }

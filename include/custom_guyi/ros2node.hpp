@@ -13,7 +13,7 @@
 #include <iostream>
 #include <string>
 #include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/float32.hpp>
+#include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <sensor_msgs/msg/compressed_image.hpp>
 #include <sensor_msgs/msg/imu.hpp>
@@ -21,7 +21,6 @@
 #include "apriltag_msgs/msg/april_tag_detection_array.hpp"
 
 namespace atd = apriltag_msgs::msg;
-
 
 class Ros2Node : public rclcpp::Node
 {
@@ -51,6 +50,7 @@ private:
     rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr depth_sub_;
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub_;
     rclcpp::Subscription<apriltag_msgs::msg::AprilTagDetectionArray>::SharedPtr tag_sub_;
+    rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr tag_id_pub_;
 
     void cam_callback(const sensor_msgs::msg::CompressedImage::SharedPtr msg);
     void depth_callback(const std_msgs::msg::Float32::SharedPtr msg);
