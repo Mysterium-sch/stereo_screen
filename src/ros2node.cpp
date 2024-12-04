@@ -17,18 +17,21 @@ Ros2Node::Ros2Node()
     declare_parameter<std::string>("sonar_topic", "imagenex831l/sonar_health");
     declare_parameter<std::string>("imu_topic", "imu/data");
     declare_parameter<std::string>("tag_topic", "/apriltag_detections");
+    declare_parameter<std::string>("bag_topic", "/bag");
 
     std::string cam_topic;
     std::string depth_topic;
     std::string sonar_topic;
     std::string imu_topic;
     std::string tag_topic;
+    std::string bag_topic;
 
     get_parameter("cam_topic", cam_topic);
     get_parameter("depth_topic", depth_topic);
     get_parameter("sonar_topic", sonar_topic);
     get_parameter("imu_topic", imu_topic);
     get_parameter("tag_topic", tag_topic);
+    get_parameter("bag_topic", bag_topic);
 
     cam_sub_ = create_subscription<sensor_msgs::msg::CompressedImage>(
         cam_topic, 1, std::bind(&Ros2Node::cam_callback, this, std::placeholders::_1));
@@ -38,6 +41,9 @@ Ros2Node::Ros2Node()
 
     sonar_sub_ = create_subscription<std_msgs::msg::String>(
         sonar_topic, 10, std::bind(&Ros2Node::sonar_callback, this, std::placeholders::_1));
+
+    bag_sub_ = create_subscription<std_msgs::msg::String>(
+        bag_topic, 10, std::bind(&Ros2Node::bag_callback, this, std::placeholders::_1));
 
     orin_sub_ = create_subscription<std_msgs::msg::String>(
         "orin", 10, std::bind(&Ros2Node::orin_callback, this, std::placeholders::_1));
@@ -102,6 +108,10 @@ void Ros2Node::sonar_callback(const std_msgs::msg::String::SharedPtr msg) {
 
 void Ros2Node::orin_callback(const std_msgs::msg::String::SharedPtr msg) {
     orin = msg->data;
+}
+
+void Ros2Node::bag_callback(const std_msgs::msg::String::SharedPtr msg) {
+    bag = msg->data;
 }
 
 void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
