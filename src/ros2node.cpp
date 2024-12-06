@@ -16,7 +16,7 @@ Ros2Node::Ros2Node()
     declare_parameter<std::string>("depth_topic", "bar30/depth");
     declare_parameter<std::string>("sonar_topic", "imagenex831l/sonar_health");
     declare_parameter<std::string>("imu_topic", "imu/data");
-    declare_parameter<std::string>("tag_topic", "/apriltag_detections");
+    declare_parameter<std::string>("tag_topic", "/aruco_markers");
     declare_parameter<std::string>("bag_topic", "/bag");
 
     std::string cam_topic;
@@ -51,7 +51,7 @@ Ros2Node::Ros2Node()
     imu_sub_ = create_subscription<sensor_msgs::msg::Imu>(
         imu_topic, 10, std::bind(&Ros2Node::imu_callback, this, std::placeholders::_1));
 
-    tag_sub_ = create_subscription<apriltag_msgs::msg::AprilTagDetectionArray>(
+    tag_sub_ = create_subscription<ros2_aruco_interfaces::msg::ArucoMarkers>(
         tag_topic, 1, std::bind(&Ros2Node::tag_callback, this, std::placeholders::_1));
 
     tag_id_pub_ = create_publisher<std_msgs::msg::Int32>("tag_id", 10);
@@ -118,16 +118,16 @@ void Ros2Node::imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg) {
     imu = (msg != nullptr) ? "Active" : "Not Active";
 }
 
-void Ros2Node::tag_callback(const apriltag_msgs::msg::AprilTagDetectionArray::SharedPtr msg) {
-    if (msg->detections.empty()) {
-        RCLCPP_INFO(this->get_logger(), "No AprilTags detected.");
+void Ros2Node::tag_callback(const ros2_aruco_interfaces::msg::ArucoMarkers::SharedPtr msg) {
+    if (msg->marker_ids.empty()) {
+        RCLCPP_INFO(this->get_logger(), "No tags detected.");
         return;
     }
 
-    for (const auto& detection : msg->detections) {
+    for (size_t i = 0; i < msg->marker_ids.size(); ++i) {
         auto tag_id_msg = std_msgs::msg::Int32();
-        tag_id_msg.data = detection.id;
+        tag_id_msg.data = msg->marker_ids[i];
         tag_id_pub_->publish(tag_id_msg);
-        RCLCPP_INFO(this->get_logger(), "Published Tag ID: %d", detection.id);
+
     }
 }

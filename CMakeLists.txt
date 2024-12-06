@@ -27,10 +27,10 @@ find_package(tf2_ros REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
 
-find_package(apriltag_msgs REQUIRED)
+find_package(ros2_aruco_interfaces REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
-    apriltag_msgs
+    ros2_aruco_interfaces
     ament_index_cpp
     control_msgs
     geometry_msgs

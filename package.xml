@@ -51,8 +51,7 @@
   <exec_depend>ur_robot_driver</exec_depend>
   <exec_depend>ur_ros2_control_demos</exec_depend>
 
-  <build_depend>apriltag_ros</build_depend>
-  <exec_depend>apriltag_ros</exec_depend>
+  <exec_depend>ros2_aruco_interfaces</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
